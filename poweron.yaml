@@ -1,0 +1,16 @@
+---
+- name: Poweroff the virtual machine
+  gather_facts: yes
+  vars_files:
+  - vsphere.yaml
+  hosts: localhost
+  tasks:
+  - name: Poweroff the VMs
+    vmware_guest:
+      hostname: "{{ vcenter_hostname }}"
+      username: "{{ vcenter_username }}"
+      password: "{{ vcenter_password }}"
+      validate_certs: no
+      uuid: "{{ vm_uuid }}"
+      state: poweredon
+    delegate_to: localhost

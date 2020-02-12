@@ -1,0 +1,25 @@
+---
+- name: Find folder path of an existing virtual machine
+  hosts: localhost
+  gather_facts: False
+  vars_files:
+    - vsphere.yaml
+  tasks:
+    - set_fact:
+        vm_name: "ansible-server-95-118"
+
+    - name: "Find folder for VM - {{ vm_name }}"
+      vmware_guest_find:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        validate_certs: False
+        name: "{{ vm_name }}"
+      delegate_to: localhost
+      register: vm_facts
+
+    - name: Print folder
+      debug:
+        msg: 
+        - "{{ vm_facts.folders }}"
+ 

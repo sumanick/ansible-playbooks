@@ -1,0 +1,10 @@
+---
+- name: Run expect commands
+  hosts: localhost
+  gather_facts: False
+  tasks:
+  - name: Generic question with multiple different responses
+    expect:
+      command: /home/sumanick/ansible/reply.sh
+      responses:
+        (?i)Hello, who are you?: Mani

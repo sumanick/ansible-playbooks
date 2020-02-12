@@ -1,0 +1,17 @@
+---
+- name: Install google-chrome
+  hosts: localhost
+  gather_facts: False
+  tasks:
+  - name: Copy google-chrome-stable repo
+    copy: 
+       src: /home/sumanick/ansible/google-chrome-stable.repo 
+       dest: /etc/yum.repos.d
+  - name: Import signing key
+    rpm_key: key=https://dl-ssl.google.com/linux/linux_signing_key.pub state=present
+ 
+  - name: Install Google Chrome
+    yum: name=google-chrome-stable state=absent
+ 
+
+ 

@@ -1,0 +1,4 @@
+---
+vcenter_server: 10.78.95.60
+vcenter_user: administrator@vsphere.local
+vcenter_pass: C1sco123=

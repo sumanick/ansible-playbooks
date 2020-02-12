@@ -1,0 +1,16 @@
+---
+ - hosts: 192.168.56.103
+   user: root
+   vars:
+     val: 'Welcome to ansible'
+   tasks:
+   - name: welcome message
+     copy:
+       dest: /home/sumanick/ansible
+       content: "{{ val }}"
+   - name: install yum
+     action: yum name=httpd state=installed
+   - name: start httpd
+     service:
+        name: httpd
+        state: restarted

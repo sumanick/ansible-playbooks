@@ -1,0 +1,38 @@
+---
+- hosts: nginx
+  gather_facts: yes
+  tasks:
+  - name: Install docker dependencies 
+    yum: 
+       name: "{{ item }}" 
+       state: latest 
+    with_items: 
+    - yum-utils 
+    - device-mapper-persistent-data 
+    - lvm2 
+  - name:  Configure docker-ce repo 
+    get_url: 
+       url: https://download.docker.com/linux/centos/docker-ce.repo 
+       dest: /etc/yum.repos.d/docker-ce.repo 
+       mode: 0644 
+  - name:  Install docker-ce 
+    yum: 
+       name: docker-ce 
+       state: present 
+  - name: Start docker 
+    service: 
+       name: docker 
+       state: started 
+       enabled: yes 
+  - name: Install docker SDK
+    yum:
+       name: docker-python
+       state: present
+  - name: Start nginx ontainer
+    docker_container:
+       name: nginx
+       image: nginx
+       pull: true
+       state: started
+       ports:
+       - "80:80"

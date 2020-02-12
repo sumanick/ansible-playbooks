@@ -1,0 +1,18 @@
+---
+- name: Windows host
+  hosts: win
+  gather_facts: yes
+  vars:
+     git_path: "%TEMP%\\7zip.exe"
+  tasks:
+  - name: Download Git
+    win_get_url:
+       url: https://www.7-zip.org/a/7z1900-x64.exe
+       dest: "{{ git_path }}"
+  - name: Install Git
+    win_package:
+       path: "{{ git_path }}"
+       product_id:  7-Zip
+       arguments: /S
+       state: present
+    

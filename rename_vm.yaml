@@ -1,0 +1,23 @@
+---
+- name: Rename VM
+  gather_facts: no
+  vars_files:
+  - vsphere.yaml
+  hosts: localhost
+  tasks:
+  - set_fact:
+      vm_name: "ansible-server-95-118"
+      new_vm_name: "ansible-finesse"
+      datacenter: "FAILOVER_LOAD_PART1"
+  - name: Gather VM details
+    vmware_guest_info:
+      hostname: "{{ vcenter_server }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      datacenter: "{{ datacenter }}"
+      validate_certs: no
+      name: "{{ vm_name }}"
+      schema: "vsphere"
+      properties: ["config.hardware.memoryMB", "guest.disk", "overallStatus"]
+    delegate_to: localhost
+    register: info

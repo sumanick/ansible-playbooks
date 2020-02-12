@@ -1,0 +1,17 @@
+---
+- name: Collect VM guest information
+  gather_facts: yes
+  vars_files:
+  - vsphere.yaml
+  hosts: localhost
+  tasks:
+  - name: Get Tags from given VM Name
+    block:
+      - name: Get virtual machine info
+        vmware_vm_info:
+          hostname: "{{ vcenter_hostname }}"
+          username: "{{ vcenter_username }}"
+          password: "{{ vcenter_password }}"
+          folder: "/datacenter/ansible-server-95-118"
+        delegate_to: localhost
+        register: vm_info

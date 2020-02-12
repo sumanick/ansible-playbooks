@@ -1,0 +1,29 @@
+---
+- name: Gather all VMs for vCenter
+  gather_facts: no
+  vars_files:
+  - vsphere.yaml
+  hosts: localhost
+  tasks:
+  - name: Login into vCenter
+    uri:
+      url: https://{{ vcenter_server }}/rest/com/vmware/cis/session
+      force_basic_auth: yes
+      validate_certs: no
+      method: POST
+      user: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+    register: login
+  - name: Get Hosts from vCenter
+    uri:
+      url: https://{{ vcenter_server }}/rest/vcenter/host
+      force_basic_auth: yes
+      validate_certs: no
+      headers:
+          Cookie: "{{ login.set_cookie }}"
+    register: vchosts
+
+  - name: Print names of ESXi host system in the given vCenter
+    debug:
+      msg: "{{ item.name }}"
+    with_items: "{{ vchosts.json.value }}"

@@ -1,0 +1,6 @@
+---
+vcenter_hostname: 10.78.95.60
+vcenter_username: administrator@vsphere.local
+vcenter_password: C1sco123=
+vm_uuid: 42228bfa-7ff5-b2ef-fcd5-96a8aa88a8ae
+datacenter: FAILOVER_LOAD_PART1

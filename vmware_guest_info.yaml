@@ -1,0 +1,19 @@
+---
+- name: Collect VM guest information
+  gather_facts: yes
+  hosts: localhost
+  vars_files:
+  - vsphere.yaml
+  tasks:
+  - name: Gather VM info from ESXi server
+    vmware_guest_info:
+      hostname: "{{ vcenter_server }}" 
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      datacenter: "{{ datacenter }}"
+      validate_certs: no
+      name: "{{ vm_name }}"
+      schema: "vsphere"
+      properties: ["config.hardware.memoryMB", "guest.disk", "overallStatus"]
+      delegate_to: localhost
+      register: info

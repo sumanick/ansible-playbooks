@@ -1,0 +1,28 @@
+---
+- name: Poweroff the virtual machine
+  gather_facts: yes
+  vars_files:
+  - vsphere.yaml
+  hosts: localhost
+  tasks:
+   - name: Get Tags from given VM Name
+     block:
+     - name: Get virtual machine info
+       vmware_vm_info:
+         hostname: '{{ vcenter_hostname }}'
+         username: '{{ vcenter_username }}'
+         password: '{{ vcenter_password }}'
+         folder: "/FAILOVER_LOAD_PART1/vm"
+         validate_certs: no
+       delegate_to: localhost
+       register: vm_info
+
+     - debug:
+         msg: "{{ vm_info }}"
+
+     - debug:
+         msg: "{{ item.tags }}"
+       with_items:
+        - "{{ vm_info.virtual_machines | json_query(query) }}"
+       vars:
+        query: "[?guest_name=='ansible-server-95-118']"

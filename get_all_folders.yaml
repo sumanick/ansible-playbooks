@@ -1,0 +1,24 @@
+---
+- name: Pull all folders from vcenter
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+  - vsphere.yaml
+  tasks:
+  - name: Login tasks
+    include_tasks: login.yaml
+ 
+  - name: Get folders from vCenter
+    uri:
+      url: https://{{ vcenter_server }}/rest/vcenter/folder
+      force_basic_auth: yes
+      validate_certs: no
+      headers:
+        Cookie: "{{ login.set_cookie }}"
+    register: vFolders
+  
+  - name: Print all foliders names
+    debug:
+      msg: "{{ item.folder }}"
+    with_items: "{{ vFolders.json.value }}"
+
